@@ -7,6 +7,7 @@ $(document).ready(function() {
 	//Creates a new location for the Hot Cold game solution, uses random numbers
 	var createSolution = function() {
 		var sol = [Math.floor((Math.random()*10)+1), Math.floor((Math.random()*10)+1)]; 
+		console.log('The solution is: '+sol);
 		return sol;
 	};
 	
@@ -50,9 +51,37 @@ $(document).ready(function() {
 	//Changes the button div color to reflect how close it is.
 	//Currently not happy with the coloring, it is hard to determine shades when you get close to the correct button, need to look at other color options
 	var changeButColor = function(button,distance) {
-		var redValue = Math.floor(-19.6154*distance+274.62);  //y=mx+b equation that gives the amount of red in 0-255 based on the distance from the correct answer
-		button.css("background-color","rgb("+redValue+",0,0)");  //Changes the background color to the red value found above
-		console.log("The red amount it: " + redValue); //Remove!
+		var redValue = 0;
+		var blueValue = 0;
+		var greenValue = 0;
+		
+		//Determine red color:
+		if(distance >= 8) {
+			redValue = 0;
+		} else if(distance <= 5) {
+			redValue = 255;
+		} else {
+			redValue = Math.floor(-85*distance+680);
+		}
+		
+		//Determine blue color:
+		if(distance <= 8) {
+			blueValue = 0;
+		} else if(distance >= 11) {
+			blueValue = 255;
+		} else {
+			blueValue = Math.floor(85*distance-680);
+		}
+		
+		//Determine green color:
+		if(distance <= 11 && distance >= 5) {
+			greenValue = 255;
+		} else if(distance < 5) {
+			greenValue = Math.floor(63.75*distance - 63.75);
+		} else {
+			greenValue = Math.floor(-85*distance + 1190);
+		}
+		button.css("background-color","rgb("+redValue+","+greenValue+","+blueValue+")");
 	}
 	
 	//Determines whether to list hotter or colder, inputs distance: distance from current cell to the winning cell and prevDist: distance from last cell to the winning cell
@@ -78,7 +107,6 @@ $(document).ready(function() {
 				hotResponse = "You're getting warmer!";
 			}
 		}
-		console.log(hotResponse);
 		$('h2').replaceWith("<h2>"+hotResponse+"</h2>");
 	}
 	
@@ -86,35 +114,30 @@ $(document).ready(function() {
 //	Program Start
 	//On load, get new solution
 	solution = createSolution();  //Returns a random location, [row, col]
-	console.log(solution);  //Remove!
 	
 	//When you click a game button
 	$('.gamebut').click(function(){
-		var butLocation = butLocate($(this))  //Locates the button that was clicked, returns [row, col]
-		butPrevClick = checkButton(butLocation, pickedButtons)  //Checks to see if the button has been clicked before
+		if(distance == 0) {
 		
-		if(butPrevClick) {  //If the button has been clicked before, then:
-			console.log("Clicked before");  //Remove
-		} else {  //Else if it hasn't been clicked before, do this: 
-			console.log("First click");  //Remove
-			pickedButtons[pickedButtons.length] = butLocation;  //Adds the current button to the already clicked buttons array
-			prevDist = distance;  //Saves the previous distance to determine the Hotter or Colder message
-			distance = distToSol(butLocation,solution);  //Gives the distance as a float, used for color equation
-			if(distance == 0) {  //If the button is the correct one, end the game
-				console.log("You won! It took you " + ((pickedButtons.length)-1) + " tries.");  //Remove!
-				$(this).css('background-color','green');  //Makes the button green when found
-				$('h2').replaceWith("<h2>You won! It took you " + ((pickedButtons.length)-1) + " tries.</h2>");  //Changes the h2 to show when you win
-				//boardReset();  //Change this to use with a button
-			} else {  //If the button is not the correct answer, change the color of the background, determine the message to display for "Hotter" or "Colder"
-				changeButColor($(this),distance);  //Changes the button color to a shade of red dependent on the distance from the correct button
-				hotOrCold(distance, prevDist);
-				//console.log("Not correct yet.");  //Remove!
+		} else {
+			var butLocation = butLocate($(this))  //Locates the button that was clicked, returns [row, col]
+			butPrevClick = checkButton(butLocation, pickedButtons)  //Checks to see if the button has been clicked before
+		
+			if(butPrevClick) {  //If the button has been clicked before, then:
+			} else {  //Else if it hasn't been clicked before, do this: 
+				pickedButtons[pickedButtons.length] = butLocation;  //Adds the current button to the already clicked buttons array
+				prevDist = distance;  //Saves the previous distance to determine the Hotter or Colder message
+				distance = distToSol(butLocation,solution);  //Gives the distance as a float, used for color equation
+				if(distance == 0) {  //If the button is the correct one, end the game
+					$(this).css('background-color','white');  //Makes the button white when found
+					$('h2').replaceWith("<h2>You won! It took you " + ((pickedButtons.length)-1) + " tries.</h2>");  //Changes the h2 to show when you win
+				} else {  //If the button is not the correct answer, change the color of the background, determine the message to display for "Hotter" or "Colder"
+					changeButColor($(this),distance);  //Changes the button color to a shade of red dependent on the distance from the correct button
+					hotOrCold(distance, prevDist);
+				}
 			}
-			console.log('Dist ' + distance);  //Remove
-			console.log('Prev Dist ' + prevDist);  //Remove
+			return pickedButtons;
 		}
-		//console.log(butLocation);  //Remove
-		return pickedButtons;
 	});
 	
 	$('button').click(function() {

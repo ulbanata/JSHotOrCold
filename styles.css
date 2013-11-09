@@ -1,0 +1,60 @@
+html, body, div, a:link, a:visited, a:active, a:hover, p, form, input, h1, h2, h3, h4, h5, h6 {
+    padding: 0px;
+    margin: 0px;
+    border-width: 0px;
+    font-family: 'Lucida Grande', 'Lucida Sans Unicode', Verdana, sans-serif;
+    font-size: 1em;
+    text-decoration: none;
+    color: #000;
+}
+body {
+	height: 100%
+	}
+#container {
+    min-height: 100%;
+    position: relative;
+    min-width: 980px;
+}
+#gameboard {
+	height: 440px;
+	width: 441;
+	margin: auto;
+	display: block;
+}
+.gamebut{
+	width:39px;
+	height:39px;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+	display: inline-block;
+	padding: 0px;
+	margin: 0px;
+	float: left;
+	background-color:black;
+}
+.row0 {
+		border-top: 1px solid black;
+}
+.col0 {
+		border-left: 1px solid black;
+}
+.gamebut:hover {
+	background-color: red;
+}
+h1, h2 {
+	text-align: center;
+}
+h1 {
+	font-size: 2.5em;
+	padding-bottom: 20px;
+	padding-top: 20px;
+}
+h2 {
+	font-size: 2em;
+	padding-bottom: 40px;
+}
+button {
+	display: block;
+	margin: auto;
+	margin-top: 10px;
+}

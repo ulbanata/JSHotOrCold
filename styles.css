@@ -24,8 +24,8 @@ body {
 .gamebut{
 	width:39px;
 	height:39px;
-	border-right: 1px solid black;
-	border-bottom: 1px solid black;
+	border-right: 1px solid gray;
+	border-bottom: 1px solid gray;
 	display: inline-block;
 	padding: 0px;
 	margin: 0px;
